@@ -9,7 +9,7 @@ PLAYLIST="$HOME/.config/pinp/playlist.txt"
 
 # Create config file if does not exist
 if [ ! -f $PINPCONF ]; then
-       install -D -m644 /etc/pinp/pinp.conf $PINPCONF 
+       install -D -m644 /etc/pinp/pinp.conf.default $PINPCONF 
 fi
 
 # Import settings from config file
@@ -29,25 +29,26 @@ else
 fi
 
 
+# Set basic options to enable mpv picture-in-picture mode
+mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
+
+
 play_local()
 {
-        mpv --ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION "$1"
+        mpv $mpv_options "$1"
 
 }
 
 
 stream()
 {
-        mpv --ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION $(youtube-dl --format "$1" --get-url "$2")
-
+        mpv $mpv_options $(youtube-dl --format "$1" --get-url "$2")
 }
 
 
 stream_youtube()
 {
-        mpv --ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION \
-            --cookies --cookies-file=$COOKIES $(youtube-dl --format $YT_FORMAT --get-url --cookies $COOKIES "$1")
-
+        mpv $mpv_options --cookies --cookies-file=$COOKIES $(youtube-dl --format $YT_FORMAT --get-url --cookies $COOKIES "$1")
 }
 
 
