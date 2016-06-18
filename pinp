@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PROGRAM=$(basename $0)
+VERSION=0.1
+
 # Config file 
 PINPCONF="$HOME/.config/pinp/pinp.conf"
 # Cookie file for youtube
