@@ -1,7 +1,11 @@
 #!/bin/bash
 
-PROGRAM=$(basename $0)
+PROGRAM="PinP"
 VERSION=0.3
+
+
+
+### CONFIGURATION ###
 
 # Config file 
 PINPCONF="$HOME/.config/pinp/pinp.conf"
@@ -17,39 +21,22 @@ fi
 . $PINPCONF
 
 
-# Check that only one argument has been passed... 
-if [ $# -gt 1 ]; then
-        echo "pinp only takes one argument, the content to play"
-        exit
-fi
-# ...assign that argument to the source to play...
-_url="$1"
 
+### FUNCTIONS ###
 
-# Perform a regex check to find whether source is a file, generic url or youtube
-
-# if content is NOT a link, assume local video file
-if [[ ! "$1" =~ ^"http" ]]; then
-        _type="local"        
-# if it is a link, but NOT from youtube treat as general url
-elif [[ "$1" != *"youtube.com"* ]]; then      
-        _type="url"
-# check if link is for a youtube video
-elif [[ "$1" == *"youtube.com/watch"* ]]; then
-        _type="yt"
-# check if link is to youtube playlist or channel
-elif [[ "$1" == *"youtube.com/playlist"* || "$1" == *"youtube.com/channel"* ]]; then
-        _type="ytpl"
-# otherwise report error and exit
-else
-        echo "Cannot identify the source."
-        exit
-       
-fi
-
-
-# Set basic options to enable mpv picture-in-picture mode
-mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
+usage()
+{	
+    echo
+    printf "This is $PROGRAM version $VERSION\n\n"
+    printf "$PROGRAM only takes one argument: the video file or url you want to watch.\n\n"
+    echo "${txtund}USAGE${txtrst}: ${txtbld}pinp${txtrst} <file or URL>"
+    echo 
+    printf "You are probably seeing this because you entered more than one argument"
+    printf "or because the shell is interpreting your argument as more than one.\n\n"
+    printf "It is also possible that there is a bug in the script!\n\n"
+    echo
+    
+}
 
 
 play_local()
@@ -83,6 +70,42 @@ stream_playlist()
 }
 
 
+### PICTURE-IN-PICTURE! ###
+
+# Check that only one argument has been passed... 
+if [ $# -gt 1 ]; then
+        usage
+        exit
+fi
+# ...assign that argument to the source to play...
+_url="$1"
+
+
+# Perform a regex check to find whether source is a file, generic url or youtube
+
+# if content is NOT a link, assume local video file
+if [[ ! "$1" =~ ^"http" ]]; then
+        _type="local"        
+# if it is a link, but NOT from youtube treat as general url
+elif [[ "$1" != *"youtube.com"* ]]; then      
+        _type="url"
+# check if link is for a youtube video
+elif [[ "$1" == *"youtube.com/watch"* ]]; then
+        _type="yt"
+# check if link is to youtube playlist or channel
+elif [[ "$1" == *"youtube.com/playlist"* || "$1" == *"youtube.com/channel"* ]]; then
+        _type="ytpl"
+# otherwise report error and exit
+else
+        echo "Cannot identify the source."
+        exit
+fi
+
+# Set basic options to enable mpv picture-in-picture mode
+mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
+
+
+
 
 case "$_type" in
                 
@@ -98,8 +121,8 @@ case "$_type" in
         # stream local file
         local) play_local "$_url";;
 
-        # give error for anything else
-        *) echo "Invalid options given.";; 
+        # show usage information
+        *) usage;; 
 
 esac
 
