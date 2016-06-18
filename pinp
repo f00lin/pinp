@@ -40,7 +40,7 @@ play_local()
 }
 
 
-stream()
+stream_url()
 {
         mpv $mpv_options $(youtube-dl --format "$1" --get-url "$2")
 }
@@ -76,10 +76,10 @@ case "$_type" in
         yt) stream_youtube "$_url";;
 
         # stream youtube playlist
-        ytpl) stream_playlist "$_url";;
+        ytpl|ytch) stream_playlist "$_url";;
 
         # stream provided URL
-        url) stream "$FORMAT" "$_url";;
+        url) stream_url "$FORMAT" "$_url";;
 
         # stream local file
         local) play_local "$_url";;
