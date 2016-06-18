@@ -22,7 +22,7 @@ if [ $# -gt 1 ]; then
         echo "pinp only takes one argument, the content to play"
         exit
 fi
-# ...asign that argument to the source to play...
+# ...assign that argument to the source to play...
 _url="$1"
 
 
