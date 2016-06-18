@@ -9,7 +9,7 @@ PLAYLIST="$HOME/.config/pinp/playlist.txt"
 
 # Create config file if does not exist
 if [ ! -f $PINPCONF ]; then
-       install -D -m644 $HOME/LOCAL/github/pinp/pinp.conf $PINPCONF 
+       install -D -m644 /etc/pinp/pinp.conf $PINPCONF 
 fi
 
 # Import settings from config file
