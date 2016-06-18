@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Config file 
+PINPCONF="$HOME/.config/pinp/pinp.conf"
+# Cookie file for youtube
+COOKIES="$HOME/.config/pinp/cookies.txt"
+# Temporary playlist file
+PLAYLIST="$HOME/.config/pinp/playlist.txt"
+
+# Create config file if does not exist
+if [ ! -f $PINPCONF ]; then
+       install -D -m644 $HOME/LOCAL/github/pinp/pinp.conf $PINPCONF 
+fi
+
+# Import settings from config file
+. $PINPCONF
+
+
+# set the type of stream and file or URL 
+if [ $# -gt 1 ]; then
+        # with two arguments, first specifies type 
+        # the second argument specifies content
+        _type="$1"
+        _url="$2"
+else
+        # if no type specified assume local file
+        _type="local"
+        _url="$1"
+fi
+
+
+play_local()
+{
+        mpv --ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION "$1"
+
+}
+
+
+stream()
+{
+        mpv --ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION $(youtube-dl --format "$1" --get-url "$2")
+
+}
+
+
+stream_youtube()
+{
+        mpv --ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION \
+            --cookies --cookies-file=$COOKIES $(youtube-dl --format $YT_FORMAT --get-url --cookies $COOKIES "$1")
+
+}
+
+
+stream_playlist()
+{
+        # get playlist URLs and write to temporary file 
+        youtube-dl --dump-json --flat-playlist "$1" | jq -r '.id' | sed 's_^_https://youtube.com/v/_' > $PLAYLIST
+
+        # play each of the videos in turn
+        while read URL
+        do
+                stream_youtube "$URL"
+        done < $PLAYLIST
+
+        # clean up playlist file
+        rm $PLAYLIST
+
+}
+
+
+
+case "$_type" in
+                
+        # stream youtube video
+        yt) stream_youtube "$_url";;
+
+        # stream youtube playlist
+        ytpl) stream_playlist "$_url";;
+
+        # stream provided URL
+        url) stream "$FORMAT" "$_url";;
+
+        # stream local file
+        local) play_local "$_url";;
+
+        # give error for anything else
+        *) echo "Invalid options given.";; 
+
+esac
+
+
