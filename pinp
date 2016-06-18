@@ -63,13 +63,15 @@ play_local()
 
 stream_url()
 {
-        mpv $mpv_options --ytdl --ytdl-format $FORMAT "$1" #$(youtube-dl --format "$1" --get-url "$2")
+        mpv $mpv_options --ytdl --ytdl-format $FORMAT "$1" 
+        
 }
 
 
 stream_youtube()
 {
-        mpv $mpv_options --cookies --cookies-file=$COOKIES --ytdl --ytdl-format $YT_FORMAT "$1" #$(youtube-dl --format $YT_FORMAT --get-url --cookies $COOKIES "$1")
+        mpv $mpv_options --ytdl --ytdl-format $YT_FORMAT "$1" 
+        
 }
 
 
