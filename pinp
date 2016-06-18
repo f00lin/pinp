@@ -19,16 +19,32 @@ fi
 . $PINPCONF
 
 
-# set the type of stream and file or URL 
+# Check that only one argument has been passed... 
 if [ $# -gt 1 ]; then
-        # with two arguments, first specifies type 
-        # the second argument specifies content
-        _type="$1"
-        _url="$2"
-else
-        # if no type specified assume local file
+        echo "pinp only takes one argument, the content to play"
+        exit
+fi
+
+
+# ...asign that argument to the source to play...
+_url="$1"
+
+
+# ...and filter the type of media, i.e. file or stream 
+if [[ "$1" != *"http"*  ]]; then
+         # if content is does not contain 'http' then assume local file
         _type="local"
-        _url="$1"
+elif [[ "$1" != *"youtube.com"* ]]; then
+        # otherwise, if content is not from youtube treat as url to stream
+        _type="url"
+fi
+
+
+if [[ "$1" == *"youtube.com/playlist"* || "$1" == *"youtube.com/channel"* ]]; then
+        # if content is a youtube playlist or channel
+        _type="ytpl"
+        # else assume content is single youtube video
+else _type="yt"
 fi
 
 
