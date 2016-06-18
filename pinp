@@ -1,12 +1,10 @@
 #!/bin/bash
 
 PROGRAM=$(basename $0)
-VERSION=0.2
+VERSION=0.3
 
 # Config file 
 PINPCONF="$HOME/.config/pinp/pinp.conf"
-# Cookie file for youtube
-COOKIES="$HOME/.config/pinp/cookies.txt"
 # Temporary playlist file
 PLAYLIST="$HOME/.config/pinp/playlist.txt"
 
@@ -63,14 +61,7 @@ play_local()
 
 stream_url()
 {
-        mpv $mpv_options --ytdl --ytdl-format $FORMAT "$1" 
-        
-}
-
-
-stream_youtube()
-{
-        mpv $mpv_options --ytdl --ytdl-format $YT_FORMAT "$1" 
+        mpv $mpv_options --ytdl --ytdl-format "$1" "$2" 
         
 }
 
@@ -83,7 +74,7 @@ stream_playlist()
         # play each of the videos in turn
         while read URL
         do
-                stream_youtube "$URL"
+                stream_url $YT_FORMAT "$URL"
         done < $PLAYLIST
 
         # clean up playlist file
@@ -96,13 +87,13 @@ stream_playlist()
 case "$_type" in
                 
         # stream youtube video
-        yt) stream_youtube "$_url";;
+        yt) stream_url $YT_FORMAT "$_url";;
 
         # stream youtube playlist
         ytpl) stream_playlist "$_url";;
 
         # stream provided URL
-        url) stream_url "$_url";;
+        url) stream_url $FORMAT "$_url";;
 
         # stream local file
         local) play_local "$_url";;
