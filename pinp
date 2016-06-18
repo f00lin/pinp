@@ -20,6 +20,9 @@ fi
 # Import settings from config file
 . $PINPCONF
 
+# Set basic options to enable mpv picture-in-picture mode
+mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
+
 
 
 ### FUNCTIONS ###
@@ -101,8 +104,6 @@ else
         exit
 fi
 
-# Set basic options to enable mpv picture-in-picture mode
-mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
 
 
 
