@@ -84,16 +84,16 @@ _url="$1"
 # Perform a regex check to find whether source is a file, generic url or youtube
 
 # if content is NOT a link, assume local video file
-if [[ ! "$1" =~ ^"http" ]]; then
+if [[ ! "$_url" =~ ^"http" ]]; then
         _type="local"        
 # if it is a link, but NOT from youtube treat as general url
-elif [[ "$1" != *"youtube.com"* ]]; then      
+elif [[ "$_url" != *"youtube.com"* ]]; then      
         _type="url"
 # check if link is for a youtube video
-elif [[ "$1" == *"youtube.com/watch"* ]]; then
+elif [[ "$_url" == *"youtube.com/watch"* ]]; then
         _type="yt"
 # check if link is to youtube playlist or channel
-elif [[ "$1" == *"youtube.com/playlist"* || "$1" == *"youtube.com/channel"* ]]; then
+elif [[ "$_url" == *"youtube.com/playlist"* || "$_url" == *"youtube.com/channel"* ]]; then
         _type="ytpl"
 # otherwise report error and exit
 else
