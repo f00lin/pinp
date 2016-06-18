@@ -31,7 +31,7 @@ _url="$1"
 # if content is NOT a link, assume local video file
 if [[ ! "$1" =~ ^"http" ]]; then
         _type="local"        
-# if it is a link, but NOT from youtube treat as general url to stream
+# if it is a link, but NOT from youtube treat as general url
 elif [[ "$1" != *"youtube.com"* ]]; then      
         _type="url"
 # check if link is for a youtube video
