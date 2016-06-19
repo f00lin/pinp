@@ -6,7 +6,7 @@
 ## Video quality settings for various services 
 #
 ## Defaut video quality setting - from youtube-dl 
-FORMAT="best"
+FORMAT="best[ext=mp4]"
 #
 ## Youtube video quality settings - from youtube-dl 
 # (format):mp4 (not vp9) to allow hw decode in mpv
