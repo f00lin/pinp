@@ -1,16 +1,7 @@
 #!/bin/bash
 
-PROGRAM="PinP"
-VERSION=0.3
-
-
-
-### CONFIGURATION ###
-
 # Config file 
 PINPCONF="$HOME/.config/pinp/pinp.conf"
-# Temporary playlist file
-PLAYLIST="$HOME/.config/pinp/playlist.txt"
 
 # Create config file if does not exist
 if [ ! -f $PINPCONF ]; then
@@ -24,61 +15,20 @@ fi
 mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
 
 
-
-### FUNCTIONS ###
-
-usage()
-{	
-    echo
-    printf "This is $PROGRAM version $VERSION\n\n"
-    printf "$PROGRAM only takes one argument: the video file or url you want to watch.\n\n"
-    echo "${txtund}USAGE${txtrst}: ${txtbld}pinp${txtrst} <file or URL>"
-    echo 
-    printf "You are probably seeing this because you entered more than one argument"
-    printf "or because the shell is interpreting your argument as more than one.\n\n"
-    printf "It is also possible that there is a bug in the script!\n\n"
-    echo
-    
-}
-
-
 play_local()
 {
         mpv $mpv_options "$1"
-
 }
-
 
 stream_url()
 {
         mpv $mpv_options --ytdl --ytdl-format "$1" "$2" 
-        
 }
 
-
-stream_playlist()
-{
-        # get playlist URLs and write to temporary file 
-        youtube-dl --dump-json --flat-playlist "$1" | jq -r '.id' | sed 's_^_https://youtube.com/v/_' > $PLAYLIST
-
-        # play each of the videos in turn
-        while read URL
-        do
-                stream_url $YT_FORMAT "$URL"
-        done < $PLAYLIST
-
-        # clean up playlist file
-        rm $PLAYLIST
-
-}
-
-
-### PICTURE-IN-PICTURE! ###
 
 # Check that only one argument has been passed... 
 if [ $# -gt 1 ]; then
-        usage
-        exit
+        echo "pinp only takes one argument: the video or url you want to play."
 fi
 # ...assign that argument to the source to play...
 _url="$1"
@@ -86,33 +36,22 @@ _url="$1"
 
 # Perform a regex check to find whether source is a file, generic url or youtube
 
-# if content is NOT a link, assume local video file
-if [[ ! "$_url" =~ ^"http" ]]; then
-        _type="local"        
+# check if link is for a youtube video
+if [[ "$_url" == *"youtube.com"* ]]; then
+        _type="yt"
 # if it is a link, but NOT from youtube treat as general url
 elif [[ "$_url" != *"youtube.com"* ]]; then      
-        _type="url"
-# check if link is for a youtube video
-elif [[ "$_url" == *"youtube.com/watch"* ]]; then
-        _type="yt"
-# check if link is to youtube playlist or channel
-elif [[ "$_url" == *"youtube.com/playlist"* || "$_url" == *"youtube.com/channel"* ]]; then
-        _type="ytpl"
-# otherwise report error and exit
-else
-        echo "Cannot identify the source."
-        exit
+        _type="url"        
+# if content is NOT a link, assume local video file
+elif [[ ! "$_url" =~ ^"http" ]]; then
+        _type="local"        
 fi
-
 
 
 case "$_type" in
                 
         # stream youtube video
         yt) stream_url $YT_FORMAT "$_url";;
-
-        # stream youtube playlist
-        ytpl) stream_playlist "$_url";;
 
         # stream provided URL
         url) stream_url $FORMAT "$_url";;
@@ -121,7 +60,7 @@ case "$_type" in
         local) play_local "$_url";;
 
         # show usage information
-        *) usage;; 
+        *) echo "Cannot identify the source.";; 
 
 esac
 
