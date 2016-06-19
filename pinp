@@ -27,11 +27,13 @@ stream_url()
 
 
 # Check that only one argument has been passed... 
-if [ $# -gt 1 ]; then
+if [[ $# -gt 1 ]]; then
         echo "pinp only takes one argument: the video or url you want to play."
+        exit
+else
+        # ...and assign that as the source to play
+        _url="$1"
 fi
-# ...assign that argument to the source to play...
-_url="$1"
 
 
 # Perform a regex check to find whether source is a file, generic url or youtube
