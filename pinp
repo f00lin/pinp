@@ -36,7 +36,7 @@ else
 fi
 
 
-# check if link is for a youtube video
+# Check if link is for a youtube video
 if [[ "$_url" =~ ^"https://www.youtube.com" ]]; then
         _type="yt"
 # if it is a link, but NOT from youtube treat as general url
