@@ -22,7 +22,7 @@ play_local()
 
 stream_url()
 {
-        mpv $mpv_options --ytdl --ytdl-format "$1" "$2" 
+        mpv $mpv_options --ytdl-format "$1" "$2" 
 }
 
 
@@ -35,8 +35,6 @@ else
         _url="$1"
 fi
 
-
-# Perform a regex check to find whether source is a file, generic url or youtube
 
 # check if link is for a youtube video
 if [[ "$_url" =~ ^"https://www.youtube.com" ]]; then
