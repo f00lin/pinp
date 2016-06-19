@@ -37,10 +37,10 @@ _url="$1"
 # Perform a regex check to find whether source is a file, generic url or youtube
 
 # check if link is for a youtube video
-if [[ "$_url" == *"youtube.com"* ]]; then
+if [[ "$_url" =~ ^"https://www.youtube.com" ]]; then
         _type="yt"
 # if it is a link, but NOT from youtube treat as general url
-elif [[ "$_url" != *"youtube.com"* ]]; then      
+elif [[ "$_url" =~ ^"http" && "$_url" != *"youtube.com"* ]]; then      
         _type="url"        
 # if content is NOT a link, assume local video file
 elif [[ ! "$_url" =~ ^"http" ]]; then
@@ -59,7 +59,7 @@ case "$_type" in
         # stream local file
         local) play_local "$_url";;
 
-        # show usage information
+        # echo an error 
         *) echo "Cannot identify the source.";; 
 
 esac
