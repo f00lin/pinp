@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+_no=1
+
+
+stream_songs()
+{
+    mpv "$1" --no-video
+}
+
+stream_search()
+{
+    mpv $(youtube-dl --format bestaudio --get-url "ytsearch$_no:$1") 
+}
+
+
+
+
+if [[ "$1" =~ ^"http" ]]; then
+        stream_songs "$1"
+
+elif [[ "$2" =~ ^[0-9]*$ ]]; then
+        _no="$2"
+        stream_search "$1"
+
+else
+        case "$1" in
+                
+                *) stream_search "$1";;
+
+        esac
+
+fi 

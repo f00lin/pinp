@@ -3,8 +3,7 @@
 # This script requires mpv and youtube-dl
 #
 
-# Playlist file
-PLAYLIST="$HOME/.config/pinp/playlist.txt"
+
 # Config file 
 PINPCONF="$HOME/.config/pinp/pinp.conf"
 
@@ -30,53 +29,22 @@ stream_url()
         mpv $mpv_options --ytdl-format $FORMAT "$1" 
 }
 
-create_playlist()
+stream_search()
 {
-        youtube-dl --dump-json --flat-playlist "$1" | jq -r '.id' | sed 's_^_https://youtube.com/v/_'
-}
-
-stream_playlist()
-{
-    create_playlist > $PLAYLIST "$1"
-    stream_url --playlist=$PLAYLIST
+    mpv $mpv_options $(youtube-dl --format $FORMAT --get-url "ytsearch$NUMBER:$1") 
 }
 
 
-#
-if [[ $# -eq 0 ]]; then
-        echo "Must include at least one argument: a file or video stream to play"
-        exit
-fi
 
-# If only one argument given that is the video to play
-if [[ $# -eq 1 ]]; then
-        _content="$1"
-        _command="$_content"
-# if two arguments, the first is a command the second the content
-# e.g 'pinp search "dogs at the beach"'
-elif [[ $# -eq 2 ]]; then
-        _command="$1"
-        _content="$2"
-# with three arguments, the command is given a number
-# e.g. 'pinp search 10 "dogs at the beach"
+if [[ "$1" =~ ^"http" ]]; then
+        stream_url "$1"
+elif [[ -f "$1" ]]; then
+        play_local "$1"
+elif [[ "$2" =~ ^[0-9]*$ ]]; then
+        NUMBER="$2"
+        stream_search "$1"
 else
-     _command="$1"
-     NUMBER="$2"
-     _content="$3"
-fi
-
-
-
-if [[ "$_content" =~ ^"http" ]]; then
-        stream_url "$_content"
-else
-        case "$_command" in
-                
-                search) stream_playlist "ytsearch${NUMBER}:${_content}";;
-
-                *) play_local "$_content";; 
-
-        esac
+        stream_search "$1"
 
 fi
 
