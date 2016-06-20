@@ -1,17 +1,11 @@
 # Config file for the pinp picture-in-picture script
 
 
-
-
-## Video quality settings for various services 
+## Video quality settings
 #
-## Defaut video quality setting - from youtube-dl 
-FORMAT="best[ext=mp4]"
+# see youtube-dl options for other values
 #
-## Youtube video quality settings - from youtube-dl 
-# (format):mp4 (not vp9) to allow hw decode in mpv
-# [video size]: balance between quality and data for streaming
-YT_FORMAT="(mp4)[height<=720]"
+FORMAT="(mp4)[height<=1080]"
 
 
 ## Initial position of video on screen

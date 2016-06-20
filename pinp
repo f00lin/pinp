@@ -3,7 +3,8 @@
 # This script requires mpv and youtube-dl
 #
 
-
+# Playlist file
+PLAYLIST="$HOME/.config/pinp/playlist.txt"
 # Config file 
 PINPCONF="$HOME/.config/pinp/pinp.conf"
 
@@ -26,8 +27,16 @@ play_local()
 
 stream_url()
 {
-        mpv $mpv_options --ytdl-format "$1" "$2" 
+        mpv $mpv_options --ytdl-format $FORMAT "$1" 
 }
+
+create_playlist()
+{
+        youtube-dl --dump-json --flat-playlist "$1" | jq -r '.id' | sed 's_^_https://youtube.com/v/_' > $PLAYLIST
+        
+        stream_url --playlist=$PLAYLIST
+}
+
 
 
 # Check that only one argument has been passed... 
@@ -36,36 +45,21 @@ if [[ $# -gt 1 ]]; then
         exit
 else
         # ...and assign that as the source to play
-        _url="$1"
+        _content="$1"
 fi
 
 
-# Check if link is for a youtube video
-if [[ "$_url" =~ ^"https://www.youtube.com" ]]; then
-        _type="yt"
-# if it is a link, but NOT from youtube treat as general url
-elif [[ "$_url" =~ ^"http" && "$_url" != *"youtube.com"* ]]; then      
-        _type="url"        
-# if content is NOT a link, assume local video file
-elif [[ ! "$_url" =~ ^"http" ]]; then
-        _type="local"        
+
+if [[ "$_content" =~ ^"http" ]]; then
+        stream_url "$_content"
+else
+        case "$_content" in
+
+                ytsearch*) create_playlist "$_content";; 
+
+                *) play_local "$_content";; 
+
+        esac
+
 fi
-
-
-case "$_type" in
-                
-        # stream youtube video
-        yt) stream_url $YT_FORMAT "$_url";;
-
-        # stream provided URL
-        url) stream_url $FORMAT "$_url";;
-
-        # stream local file
-        local) play_local "$_url";;
-
-        # echo an error 
-        *) echo "Cannot identify the source.";; 
-
-esac
-
 
