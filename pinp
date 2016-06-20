@@ -42,6 +42,12 @@ stream_playlist()
 }
 
 
+#
+if [[ $# -eq 0 ]]; then
+        echo "Must include at least one argument: a file or video stream to play"
+        exit
+fi
+
 # If only one argument given that is the video to play
 if [[ $# -eq 1 ]]; then
         _content="$1"
