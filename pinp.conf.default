@@ -32,4 +32,5 @@ SIZE="640x360"
 #SIZE="1280x720"
 
 
-
+## Number of videos to queue up from search
+NUMBER=1

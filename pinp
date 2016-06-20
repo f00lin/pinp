@@ -32,20 +32,31 @@ stream_url()
 
 create_playlist()
 {
-        youtube-dl --dump-json --flat-playlist "$1" | jq -r '.id' | sed 's_^_https://youtube.com/v/_' > $PLAYLIST
-        
-        stream_url --playlist=$PLAYLIST
+        youtube-dl --dump-json --flat-playlist "$1" | jq -r '.id' | sed 's_^_https://youtube.com/v/_'
+}
+
+stream_playlist()
+{
+    create_playlist > $PLAYLIST "$1"
+    stream_url --playlist=$PLAYLIST
 }
 
 
-
-# Check that only one argument has been passed... 
-if [[ $# -gt 1 ]]; then
-        echo "pinp only takes one argument: the video or url you want to play."
-        exit
-else
-        # ...and assign that as the source to play
+# If only one argument given that is the video to play
+if [[ $# -eq 1 ]]; then
         _content="$1"
+        _command="$_content"
+# if two arguments, the first is a command the second the content
+# e.g 'pinp search "dogs at the beach"'
+elif [[ $# -eq 2 ]]; then
+        _command="$1"
+        _content="$2"
+# with three arguments, the command is given a number
+# e.g. 'pinp search 10 "dogs at the beach"
+else
+     _command="$1"
+     NUMBER="$2"
+     _content="$3"
 fi
 
 
@@ -53,9 +64,9 @@ fi
 if [[ "$_content" =~ ^"http" ]]; then
         stream_url "$_content"
 else
-        case "$_content" in
-
-                ytsearch*) create_playlist "$_content";; 
+        case "$_command" in
+                
+                search) stream_playlist "ytsearch${NUMBER}:${_content}";;
 
                 *) play_local "$_content";; 
 
