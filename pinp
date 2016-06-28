@@ -45,6 +45,8 @@ stream_search()
 # Set number of videos to stream if specified
 if [[ "$2" =~ ^[0-9]*$ ]]; then
         NUMBER=$2
+elif [[ "$3" =~ ^[0-9]*$ ]]; then
+        NUMBER=$3
 fi
 
 
@@ -54,6 +56,9 @@ elif [[ -f "$1" ]]; then
         play_local "$1"
 else
         case "$1" in
+
+                gs) SEARCH="gvsearch"
+                    stream_search "$2";;
 
                 *) stream_search "$1";;
         esac
