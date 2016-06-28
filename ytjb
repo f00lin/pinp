@@ -17,7 +17,7 @@ fi
 #. $PINPCONF
 . /home/james/LOCAL/github/pinp/pinp.conf.default
 
-_no=1
+#_no=1
 
 
 stream_songs()
@@ -27,19 +27,21 @@ stream_songs()
 
 stream_search()
 {
-    mpv $(youtube-dl --format bestaudio --get-url "$SEARCH$_no:$1") 
+    mpv $(youtube-dl --format bestaudio --get-url "$SEARCH$A_NUMBER:$1") 
 }
 
+
+# Set number of clips to stream if specified
+if [[ "$2" =~ ^[0-9]*$ ]]; then
+                A_NUMBER=$2
+elif [[ "$3" =~ ^[0-9]*$ ]]; then
+                A_NUMBER=$3
+fi
 
 
 
 if [[ "$1" =~ ^"http" ]]; then
         stream_songs "$1"
-
-elif [[ "$2" =~ ^[0-9]*$ ]]; then
-        _no="$2"
-        stream_search "$1"
-
 else
         case "$1" in
 
