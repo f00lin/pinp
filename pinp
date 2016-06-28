@@ -57,6 +57,9 @@ elif [[ -f "$1" ]]; then
 else
         case "$1" in
 
+                hq) FORMAT="$BEST_FORMAT"
+                    stream_url "$2";;
+
                 gs) SEARCH="gvsearch"
                     stream_search "$2";;
 

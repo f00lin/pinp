@@ -5,6 +5,9 @@
 #
 FORMAT="(mp4)[height<=1080]"
 
+## Best video quality, defaulting to mp4, but any best of mp4 not available
+# 
+BEST_FORMAT="bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
 
 ## Audio quality settings
 #
