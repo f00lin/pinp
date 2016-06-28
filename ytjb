@@ -17,7 +17,6 @@ fi
 #. $PINPCONF
 . /home/james/LOCAL/github/pinp/pinp.conf.default
 
-#_no=1
 
 
 stream_songs()
