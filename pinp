@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# pinp - plays local files and streaming video in a picture-in-picture window
+#
 # This script requires mpv and youtube-dl
 #
 
@@ -13,10 +15,16 @@ if [ ! -f $PINPCONF ]; then
 fi
 
 # Import settings from config file
-. $PINPCONF
+#. $PINPCONF
+. /home/james/LOCAL/github/pinp/pinp.conf.default
 
 # Set basic options to enable mpv picture-in-picture mode
 mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
+
+# Make format more flexible for google video search
+if [[ "$SEARCH" -eq "gvsearch" ]]; then
+        FORMAT="[height<=?720]"
+fi
 
 
 play_local()
@@ -31,20 +39,24 @@ stream_url()
 
 stream_search()
 {
-    mpv $mpv_options $(youtube-dl --format $FORMAT --get-url "ytsearch$NUMBER:$1") 
+    mpv $mpv_options $(youtube-dl --format $FORMAT --get-url "$SEARCH$NUMBER:$1") 
 }
 
+# Set number of videos to stream if specified
+if [[ "$2" =~ ^[0-9]*$ ]]; then
+        NUMBER=$2
+fi
 
 
 if [[ "$1" =~ ^"http" ]]; then
         stream_url "$1"
 elif [[ -f "$1" ]]; then
         play_local "$1"
-elif [[ "$2" =~ ^[0-9]*$ ]]; then
-        NUMBER="$2"
-        stream_search "$1"
 else
-        stream_search "$1"
+        case "$1" in
+
+                *) stream_search "$1";;
+        esac
 
 fi
 

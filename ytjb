@@ -1,5 +1,20 @@
 #!/bin/bash
+#
+# ytjb - plays audio from youtube 
+#
+# This script requires mpv and youtube-dl
+#
 
+# Config file 
+PINPCONF="$HOME/.config/pinp/pinp.conf"
+
+# Create config file if does not exist
+if [ ! -f $PINPCONF ]; then
+       install -D -m644 /etc/pinp/pinp.conf.default $PINPCONF 
+fi
+
+# Import settings from config file
+. $PINPCONF
 
 _no=1
 

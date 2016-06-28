@@ -3,9 +3,12 @@
 
 ## Video quality settings
 #
-# see youtube-dl options for other values
-#
 FORMAT="(mp4)[height<=1080]"
+
+
+## Audio quality settings
+#
+A_FORMAT="bestaudio"
 
 
 ## Initial position of video on screen
@@ -32,5 +35,16 @@ SIZE="640x360"
 #SIZE="1280x720"
 
 
+## Default search
+# youtube
+SEARCH="ytsearch"
+# google videos
+#SEARCH="gvsearch"
+
+
 ## Number of videos to queue up from search
 NUMBER=1
+
+
+## Number of audio streams to queue up from search
+A_NUMBER=1
