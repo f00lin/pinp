@@ -14,7 +14,8 @@ if [ ! -f $PINPCONF ]; then
 fi
 
 # Import settings from config file
-. $PINPCONF
+#. $PINPCONF
+. /home/james/LOCAL/github/pinp/pinp.conf.default
 
 _no=1
 
@@ -26,7 +27,7 @@ stream_songs()
 
 stream_search()
 {
-    mpv $(youtube-dl --format bestaudio --get-url "ytsearch$_no:$1") 
+    mpv $(youtube-dl --format bestaudio --get-url "$SEARCH$_no:$1") 
 }
 
 
@@ -41,6 +42,9 @@ elif [[ "$2" =~ ^[0-9]*$ ]]; then
 
 else
         case "$1" in
+
+                sc) SEARCH="scsearch"
+                    stream_search "$2";;
                 
                 *) stream_search "$1";;
 
