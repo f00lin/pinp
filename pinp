@@ -47,15 +47,15 @@ date_search()
 
         case "$1" in
 
-                day) DATE=$(date +%Y%m%d -d "1 day ago");;
+                day) DATE="now-1day";;
 
-                week) DATE=$(date +%Y%m%d -d "1 week ago");;
+                week) DATE="now-1week";;
 
-                month) DATE=$(date +%Y%m%d -d "1 month ago");;
+                month) DATE="now-1month";;
 
         esac
 
-        mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter "$DATE" --get-url "$SEARCH$NUMBER:$2") 
+        mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter $DATE --get-url "$SEARCH$NUMBER:$2") 
 
 }
 
@@ -77,7 +77,7 @@ else
                 hq) FORMAT="$BEST_FORMAT"
                     stream_url "$2";;
 
-                gs) SEARCH="gvsearch"
+                gvs) SEARCH="gvsearch"
                     stream_search "$2";;
 
                 day|week|month) date_search "$1" "$2";;
