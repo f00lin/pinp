@@ -42,6 +42,23 @@ stream_search()
     mpv $mpv_options $(youtube-dl --format $FORMAT --get-url "$SEARCH$NUMBER:$1") 
 }
 
+date_search()
+{
+
+        case "$1" in
+
+                day) DATE=$(date +%Y%m%d -d "1 day ago");;
+
+                week) DATE=$(date +%Y%m%d -d "1 week ago");;
+
+                month) DATE=$(date +%Y%m%d -d "1 month ago");;
+
+        esac
+
+        mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter "$DATE" --get-url "$SEARCH$NUMBER:$2") 
+
+}
+
 # Set number of videos to stream if specified
 if [[ "$2" =~ ^[0-9]*$ ]]; then
         NUMBER=$2
@@ -62,6 +79,8 @@ else
 
                 gs) SEARCH="gvsearch"
                     stream_search "$2";;
+
+                day|week|month) date_search "$1" "$2";;
 
                 *) stream_search "$1";;
         esac
