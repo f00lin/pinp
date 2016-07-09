@@ -13,7 +13,7 @@ BEST_FORMAT="bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
 #
 A_FORMAT="bestaudio"
 
-## Date to search videos, defaults to beginning of unix time
+## Search for videos *after* this date, defaults to beginning of unix time
 #
 DATE="19700101"
 

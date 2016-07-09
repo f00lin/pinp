@@ -15,8 +15,7 @@ if [ ! -f $PINPCONF ]; then
 fi
 
 # Import settings from config file
-#. $PINPCONF
-. /home/james/LOCAL/github/pinp/pinp.conf.default
+. $PINPCONF
 
 # Set basic options to enable mpv picture-in-picture mode
 mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
@@ -85,7 +84,7 @@ else
                 day|week|month|year) date_search "$1" "$2";;
 
                 *) stream_search "$1";;
-        esac
 
+        esac
 fi
 
