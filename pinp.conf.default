@@ -49,8 +49,8 @@ SEARCH="ytsearch"
 
 
 ## Number of videos to queue up from search
-NUMBER=1
+V_NO=1
 
 
 ## Number of audio streams to queue up from search
-A_NUMBER=1
+A_NO=1

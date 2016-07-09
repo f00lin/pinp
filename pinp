@@ -15,7 +15,8 @@ if [ ! -f $PINPCONF ]; then
 fi
 
 # Import settings from config file
-. $PINPCONF
+#. $PINPCONF
+. /home/james/LOCAL/github/pinp/pinp.conf.default
 
 # Set basic options to enable mpv picture-in-picture mode
 mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
@@ -38,7 +39,7 @@ stream_url()
 
 stream_search()
 {
-    mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter $DATE --get-url "$SEARCH$NUMBER:$1") 
+    mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter $DATE --get-url "$SEARCH$V_NO:$1") 
 }
 
 date_search()
@@ -61,10 +62,10 @@ date_search()
 
 
 # Set number of videos to stream if specified
-if [[ "$2" =~ ^[0-9]*$ ]]; then
-        NUMBER=$2
-elif [[ "$3" =~ ^[0-9]*$ ]]; then
-        NUMBER=$3
+if [[ -n "$2" && "$2" =~ ^[0-9]*$ ]]; then
+        V_NO=$2
+elif [[ -n "$3" && "$3" =~ ^[0-9]*$ ]]; then
+        V_NO=$3
 fi
 
 

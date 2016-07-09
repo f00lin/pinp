@@ -26,15 +26,15 @@ stream_songs()
 
 stream_search()
 {
-    mpv $(youtube-dl --format bestaudio --get-url "$SEARCH$A_NUMBER:$1") 
+    mpv $(youtube-dl --format bestaudio --get-url "$SEARCH$A_NO:$1") 
 }
 
 
 # Set number of clips to stream if specified
-if [[ "$2" =~ ^[0-9]*$ ]]; then
-                A_NUMBER=$2
-elif [[ "$3" =~ ^[0-9]*$ ]]; then
-                A_NUMBER=$3
+if [[ -n "$2" && "$2" =~ ^[0-9]*$ ]]; then
+                A_NO=$2
+elif [[ -n "$3" && "$3" =~ ^[0-9]*$ ]]; then
+                A_NO=$3
 fi
 
 
