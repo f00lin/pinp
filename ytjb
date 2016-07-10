@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# ytjb - plays audio from youtube 
+# ytjb - plays audio from youtube and other sources
 #
 # This script requires mpv and youtube-dl
 #
@@ -77,3 +77,5 @@ if [[ "$1" =~ ^"http" ]]; then
 else
         stream_search "$1"
 fi 
+
+

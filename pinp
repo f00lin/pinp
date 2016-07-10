@@ -84,7 +84,7 @@ fi
 mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
 
 # Make format more flexible for google video search
-if [[ "$SEARCH" -eq "gvsearch" ]]; then
+if [[ "$VIDEO_SEARCH" -eq "gvsearch" ]]; then
         FORMAT="[height<=?720]"
 fi
 
@@ -97,3 +97,5 @@ elif [[ -f "$1" ]]; then
 else
         stream_search "$1"
 fi 
+
+
