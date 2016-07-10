@@ -5,17 +5,22 @@
 # This script requires mpv and youtube-dl
 #
 
-# Config file 
-PINPCONF="$HOME/.config/pinp/pinp.conf"
+PROGRAM=$(basename $0)
 
-# Create config file if does not exist
-if [ ! -f $PINPCONF ]; then
-       install -D -m644 /etc/pinp/pinp.conf.default $PINPCONF 
+
+# Config file 
+USER_CONF="$HOME/.config/pinp/pinp.conf"
+SYSTEM_CONF="/etc/pinp/pinp.conf.default"
+
+
+# Source config from user home if available...
+if [[ -f $USER_CONF ]]; then
+       . $USER_CONF
+else
+       #...else source settings from system config
+       . $SYSTEM_CONF
 fi
 
-# Import settings from config file
-#. $PINPCONF
-. /home/james/LOCAL/github/pinp/pinp.conf.default
 
 
 
@@ -26,29 +31,49 @@ stream_songs()
 
 stream_search()
 {
-    mpv $(youtube-dl --format bestaudio --get-url "$SEARCH$A_NO:$1") 
+    mpv $(youtube-dl --format $AUDIO_FORMAT --get-url "$AUDIO_SEARCH$AUDIO_NO:$1") 
+}
+
+usage()
+{
+    printf "\nThis is $PROGRAM. At a minimum, you need to specify a search term or URL.\n\n"
+    printf "The following options are also available:\n\n\n"
+    printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
+    printf '%-20s%-60s \n\n' "-s" "select the source to search yt=youtube, sc=soundcloud"
+    printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
 }
 
 
-# Set number of clips to stream if specified
-if [[ -n "$2" && "$2" =~ ^[0-9]*$ ]]; then
-                A_NO=$2
-elif [[ -n "$3" && "$3" =~ ^[0-9]*$ ]]; then
-                A_NO=$3
+
+# Check for options
+while getopts ":n:f:" OPTION
+do
+        case $OPTION in
+
+                n) AUDIO_NO=$OPTARG;;
+                
+                f) AUDIO_SEARCH="${OPTARG}search";;
+                
+                *) usage
+                   exit;;
+
+        esac
+done
+
+# Shift options along so content is first argument
+shift $((OPTIND - 1))
+
+
+# Exit if no content specified
+if [[ $# -eq 0 ]]; then
+        usage
+        exit
 fi
 
 
-
+# Stream content
 if [[ "$1" =~ ^"http" ]]; then
         stream_songs "$1"
 else
-        case "$1" in
-
-                sc) SEARCH="scsearch"
-                    stream_search "$2";;
-                
-                *) stream_search "$1";;
-
-        esac
-
+        stream_search "$1"
 fi 

@@ -1,56 +1,71 @@
-# Config file for the pinp picture-in-picture script
+# Config
 
 
-## Video quality settings
+### VIDEO ###
+
+## Video quality
 #
 FORMAT="(mp4)[height<=1080]"
-
-## Best video quality, defaulting to mp4, but any best if mp4 not available
-# 
+#
 BEST_FORMAT="bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
 
-## Audio quality settings
-#
-A_FORMAT="bestaudio"
 
-## Search for videos *after* this date, defaults to beginning of unix time
+## Video position
+#
+TOP_RIGHT="98%:2%"
+BOTTOM_RIGHT="98%:98%"
+TOP_LEFT="2%:2%"
+BOTTOM_LEFT="2%:98%"
+#
+POSITION="$BOTTOM_RIGHT"
+
+
+## Video size
+#
+SMALL_VID="384x216"
+MED_VID="640x360"
+LARGE_VID="1280x720"
+#
+SIZE="$MED_VID"
+
+
+## Default video search
+#
+SEARCHSOURCE="yt"
+#SEARCHSOURCE="gv"
+#
+VIDEO_SEARCH="${SEARCHSOURCE}search"
+
+
+## Search for videos *after* this date
 #
 DATE="19700101"
 
-## Initial position of video on screen
-#
-# x-axis:y-axis - from mpv
-#
-# top right
-#POSITION="98%:2%"
-#bottom right
-POSITION="98%:98%"
-# top left
-#POSITION="2%:2%"
-# bottom left
-#POSITION="2%:98%"
-
-
-## Initial size of video
-#
-# small 
-#SIZE="384x216"
-# medium
-SIZE="640x360"
-# large
-#SIZE="1280x720"
-
-
-## Default search
-# youtube
-SEARCH="ytsearch"
-# google videos
-#SEARCH="gvsearch"
-
 
 ## Number of videos to queue up from search
-V_NO=1
+#
+VIDEO_NO=1
+
+
+
+### AUDIO ###
+
+## Audio quality
+#
+AUDIO_FORMAT="bestaudio"
+
+
+## Default audio search
+#
+# Youtube
+SEARCHSOURCE="yt"
+# Soundcloud
+#SEARCHSOURCE="sc"
+#
+AUDIO_SEARCH="${SEARCHSOURCE}search"
 
 
 ## Number of audio streams to queue up from search
-A_NO=1
+#
+AUDIO_NO=1
+

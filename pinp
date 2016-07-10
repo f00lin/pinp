@@ -5,26 +5,23 @@
 # This script requires mpv and youtube-dl
 #
 
+PROGRAM=$(basename $0)
+
 
 # Config file 
-PINPCONF="$HOME/.config/pinp/pinp.conf"
+USER_CONF="$HOME/.config/pinp/pinp.conf"
+SYSTEM_CONF="/etc/pinp/pinp.conf.default"
 
-# Create config file if does not exist
-if [ ! -f $PINPCONF ]; then
-       install -D -m644 /etc/pinp/pinp.conf.default $PINPCONF 
+
+# Source config from user home if available...
+if [[ -f $USER_CONF ]]; then
+       . $USER_CONF
+else
+       #...else source settings from system config
+       . $SYSTEM_CONF
 fi
 
-# Import settings from config file
-#. $PINPCONF
-. /home/james/LOCAL/github/pinp/pinp.conf.default
 
-# Set basic options to enable mpv picture-in-picture mode
-mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
-
-# Make format more flexible for google video search
-if [[ "$SEARCH" -eq "gvsearch" ]]; then
-        FORMAT="[height<=?720]"
-fi
 
 
 play_local()
@@ -39,53 +36,64 @@ stream_url()
 
 stream_search()
 {
-    mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter $DATE --get-url "$SEARCH$V_NO:$1") 
+    mpv $mpv_options $(youtube-dl --format $FORMAT --dateafter $DATE --get-url "$VIDEO_SEARCH$VIDEO_NO:$1") 
 }
 
-date_search()
+usage()
 {
+    printf "\nThis is $PROGRAM. At a minimum, you need to specify a file, search term or URL.\n\n"
+    printf "The following options are also available:\n\n\n"
+    printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
+    printf '%-20s%-60s \n' "-d" "search for videos uploaded during the last: day, week, month, year"
+    printf '%-20s%-60s \n' "-s, -m, -l" "set size of picture-in-picture video (small, medium, large)"
+    printf '%-20s%-60s \n\n' "-f" "select the source to search: yt=youtube, gv=google video"
+    printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
+}
 
-        case "$1" in
 
-                day) DATE="now-1day";;
 
-                week) DATE="now-1week";;
+# Check for options
+while getopts ":n:f:d:sml" OPTION
+do
+        case $OPTION in
 
-                month) DATE="now-1month";;
-
-                year) DATE="now-1year";;
+                n) VIDEO_NO=$OPTARG;;
+                f) VIDEO_SEARCH="${OPTARG}search";;
+                s) SIZE="$SMALL_VID";;
+                m) SIZE="$MED_VID";;
+                l) SIZE="$LARGE_VID";;
+                d) DATE="now-1${OPTARG}";;
+                *) usage
+                   exit;;
 
         esac
-
-        stream_search "$2"
-}
+done
 
 
-# Set number of videos to stream if specified
-if [[ -n "$2" && "$2" =~ ^[0-9]*$ ]]; then
-        V_NO=$2
-elif [[ -n "$3" && "$3" =~ ^[0-9]*$ ]]; then
-        V_NO=$3
+# Shift options along so content is first argument
+shift $((OPTIND - 1))
+
+
+# Exit if no content specified
+if [[ $# -eq 0 ]]; then
+        usage
+        exit
+fi
+
+# Set basic options to enable mpv picture-in-picture mode
+mpv_options="--ontop --no-border --on-all-workspaces --autofit=$SIZE --geometry=$POSITION"
+
+# Make format more flexible for google video search
+if [[ "$SEARCH" -eq "gvsearch" ]]; then
+        FORMAT="[height<=?720]"
 fi
 
 
+# Stream content
 if [[ "$1" =~ ^"http" ]]; then
         stream_url "$1"
 elif [[ -f "$1" ]]; then
         play_local "$1"
 else
-        case "$1" in
-
-                hq) FORMAT="$BEST_FORMAT"
-                    stream_url "$2";;
-
-                gvs) SEARCH="gvsearch"
-                     stream_search "$2";;
-
-                day|week|month|year) date_search "$1" "$2";;
-
-                *) stream_search "$1";;
-
-        esac
-fi
-
+        stream_search "$1"
+fi 
