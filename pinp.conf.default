@@ -56,11 +56,11 @@ AUDIO_FORMAT="bestaudio"
 ## Default audio search
 #
 # Youtube
-SEARCHSOURCE="yt"
+AUDIOSEARCHSOURCE="yt"
 # Soundcloud
-#SEARCHSOURCE="sc"
+#AUDIOSEARCHSOURCE="sc"
 #
-AUDIO_SEARCH="${SEARCHSOURCE}search"
+AUDIO_SEARCH="${AUDIOSEARCHSOURCE}search"
 
 
 ## Number of audio streams to queue up from search
