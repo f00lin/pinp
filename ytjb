@@ -36,11 +36,14 @@ stream_search()
 
 usage()
 {
-    printf "\nThis is $PROGRAM. At a minimum, you need to specify a search term or URL.\n\n"
+    printf "\nThis is $PROGRAM: a script for streaming audio from YouTube and other sites\n"
+    printf "\nAt a minimum, you need to specify a search term or URL.\n\n"
     printf "The following options are also available:\n\n\n"
     printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
     printf '%-20s%-60s \n\n' "-s" "select the source to search yt=youtube, sc=soundcloud"
     printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
+
+    exit
 }
 
 
@@ -54,8 +57,7 @@ do
                 
                 f) AUDIO_SEARCH="${OPTARG}search";;
                 
-                *) usage
-                   exit;;
+                *) usage;;
 
         esac
 done
@@ -67,7 +69,6 @@ shift $((OPTIND - 1))
 # Exit if no content specified
 if [[ $# -eq 0 ]]; then
         usage
-        exit
 fi
 
 

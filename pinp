@@ -41,7 +41,7 @@ stream_search()
 
 usage()
 {
-    printf "\nThis is $PROGRAM, a script for playing picture-in-picture video.\n"
+    printf "\nThis is $PROGRAM: a script for playing picture-in-picture video.\n"
     printf "\nAt a minimum, you need to specify a file, search term or URL.\n\n"
     printf "The following options are also available:\n\n\n"
     printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
@@ -49,7 +49,7 @@ usage()
     printf '%-20s%-60s \n' "-p" "set initial video position: 1=top left, 2=top right, 3=bottom left, 4= bottom right"
     printf '%-20s%-60s \n' "-s, -m, -l" "set size of picture-in-picture video (small, medium, large)"
     printf '%-20s%-60s \n\n' "-f" "select the source to search: yt=youtube, gv=google video"
-    printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
+    printf "\n USAGE: $PROGRAM [options] <file, search or URL to stream>\n\n"
 
     exit
 }
