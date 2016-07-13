@@ -48,6 +48,8 @@ usage()
     printf '%-20s%-60s \n' "-s, -m, -l" "set size of picture-in-picture video (small, medium, large)"
     printf '%-20s%-60s \n\n' "-f" "select the source to search: yt=youtube, gv=google video"
     printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
+
+    exit
 }
 
 
@@ -64,15 +66,15 @@ do
                 l) SIZE="$LARGE_VID";;
                 d) DATE="now-1${OPTARG}";;
 
-                p) p=$OPTARG
+                p) p=$OPTARG     
                    ((p == 1)) && POSITION=$TOP_LEFT    
                    ((p == 2)) && POSITION=$TOP_RIGHT
                    ((p == 3)) && POSITION=$BOTTOM_LEFT
                    ((p == 4)) && POSITION=$BOTTOM_RIGHT
+                   ((p == 1 || p == 2 || p == 3 || p == 4)) || usage
                    ;;
 
-                *) usage
-                   exit;;
+                *) usage;;
 
         esac
 done
@@ -85,7 +87,6 @@ shift $((OPTIND - 1))
 # Exit if no content specified
 if [[ $# -eq 0 ]]; then
         usage
-        exit
 fi
 
 # Set basic options to enable mpv picture-in-picture mode
