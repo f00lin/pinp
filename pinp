@@ -41,7 +41,8 @@ stream_search()
 
 usage()
 {
-    printf "\nThis is $PROGRAM. At a minimum, you need to specify a file, search term or URL.\n\n"
+    printf "\nThis is $PROGRAM, a script for playing picture-in-picture video.\n"
+    printf "\nAt a minimum, you need to specify a file, search term or URL.\n\n"
     printf "The following options are also available:\n\n\n"
     printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
     printf '%-20s%-60s \n' "-d" "search for videos uploaded during the last: day, week, month, year"
