@@ -45,6 +45,7 @@ usage()
     printf "The following options are also available:\n\n\n"
     printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
     printf '%-20s%-60s \n' "-d" "search for videos uploaded during the last: day, week, month, year"
+    printf '%-20s%-60s \n' "-p" "set initial video position: 1=top left, 2=top right, 3=bottom left, 4= bottom right"
     printf '%-20s%-60s \n' "-s, -m, -l" "set size of picture-in-picture video (small, medium, large)"
     printf '%-20s%-60s \n\n' "-f" "select the source to search: yt=youtube, gv=google video"
     printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
