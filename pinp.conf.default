@@ -29,7 +29,9 @@ SIZE="$MED_VID"
 
 ## Default video search
 #
+# YouTube
 SEARCHSOURCE="yt"
+# Google Video 
 #SEARCHSOURCE="gv"
 #
 VIDEO_SEARCH="${SEARCHSOURCE}search"
@@ -55,7 +57,7 @@ AUDIO_FORMAT="bestaudio"
 
 ## Default audio search
 #
-# Youtube
+# YouTube
 AUDIOSEARCHSOURCE="yt"
 # Soundcloud
 #AUDIOSEARCHSOURCE="sc"
