@@ -50,6 +50,7 @@ usage()
     printf '%-20s%-60s \n' "-s, -m, -l" "set size of picture-in-picture video (small, medium, large)"
     printf '%-20s%-60s \n\n' "-f" "select the source to search: yt=youtube, gv=google video"
     printf "\n USAGE: $PROGRAM [options] <file, search or URL to stream>\n\n"
+    printf "For per-user settings, copy '/etc/pinp/pinp.conf.default' to '~/.config/pinp/pinp.conf' and modify as needed\n\n"
 
     exit
 }
