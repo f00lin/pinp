@@ -40,7 +40,7 @@ usage()
     printf "\nAt a minimum, you need to specify a search term or URL.\n\n"
     printf "The following options are also available:\n\n\n"
     printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
-    printf '%-20s%-60s \n\n' "-s" "select the source to search yt=youtube, sc=soundcloud"
+    printf '%-20s%-60s \n\n' "-f" "select the source to search yt=youtube, sc=soundcloud"
     printf "\n USAGE: $PROGRAM [options] <search or URL to stream>\n\n"
     printf "For per-user settings, copy '/etc/pinp/pinp.conf.default' to '~/.config/pinp/pinp.conf' and modify as needed\n\n"
 
