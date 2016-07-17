@@ -13,7 +13,7 @@ USER_CONF="$HOME/.config/pinp/pinp.conf"
 SYSTEM_CONF="/etc/pinp/pinp.conf.default"
 
 
-# Source config from user home if available...
+# Source config from home directory if exists...
 if [[ -f $USER_CONF ]]; then
        . $USER_CONF
 else
