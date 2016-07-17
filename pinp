@@ -45,7 +45,6 @@ usage()
     printf "\nAt a minimum, you need to specify a file, search term or URL.\n\n"
     printf "The following options are also available:\n\n\n"
     printf '%-20s%-60s \n' "-n" "queue up n number of streams from search"
-    printf '%-20s%-60s \n' "-d" "search for videos uploaded during the last: day, week, month, year"
     printf '%-20s%-60s \n' "-p" "set initial video position: 1=top left, 2=top right, 3=bottom left, 4=bottom right"
     printf '%-20s%-60s \n' "-s, -m, -l" "set size of picture-in-picture video (small, medium, large)"
     printf '%-20s%-60s \n\n' "-f" "select the source to search: yt=youtube, gv=google video"
@@ -58,7 +57,7 @@ usage()
 
 
 # Check for options
-while getopts ":n:f:d:p:sml" OPTION
+while getopts ":n:f:p:sml" OPTION
 do
         case $OPTION in
 
@@ -67,7 +66,6 @@ do
                 s) SIZE="$SMALL_VID";;
                 m) SIZE="$MED_VID";;
                 l) SIZE="$LARGE_VID";;
-                d) DATE="now-1${OPTARG}";;
 
                 p) p=$OPTARG     
                    ((p == 1)) && POSITION=$TOP_LEFT    
